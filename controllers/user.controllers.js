@@ -21,4 +21,14 @@ module.exports.register = async(req,res)=>{
     }
 }
 
+module.exports.logout = async(req,res,next)=>{
+    try {
+        await req.logout((err)=>{
+            if(err) return next(err)
+            return res.status(200).json({message : "logged out successfull"})
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 

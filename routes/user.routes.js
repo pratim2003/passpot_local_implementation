@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const {register} = require("../controllers/user.controllers")
+const {register,logout} = require("../controllers/user.controllers")
 // const passport = require("passport")
 // require("../config/passport")(passport)
 const {logMiddleWare,isAutheticated} = require("../middlewares/login.middleware")
@@ -12,5 +12,6 @@ router.post("/login",logMiddleWare,(req,res)=>{
 router.get("/secure",isAutheticated,(req,res)=>{
     return res.status(200).send(`${req.user.username} is autheticated`)
 })
+router.delete("/logout",isAutheticated,logout)
 
 module.exports = router
