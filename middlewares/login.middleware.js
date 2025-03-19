@@ -27,3 +27,10 @@ module.exports.isAutheticated = (req,res,next)=>{
     if(!req.isAuthenticated()) return res.status(401).json({message : "not authorized"})
     next()
 }
+
+module.exports.isAdmin = (req,res,next)=>{
+    if(req.isAuthenticated() && req.user.admin){
+        return next()
+    }
+    return res.status(401).json({message : `${req.user.username} is unautharized`})
+}

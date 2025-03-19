@@ -7,6 +7,7 @@ module.exports = function(passport){
         async function(username,password,done){
             try {
                 // console.log(username,password)
+                
                 const user = await userModel.findOne({username})
                 if(!user) return done(null,false,{message : `${username} doest not exist`})
                 if(!await user.isVerified(password)) return done(null,false,{message : `${password} is incorrect`})
