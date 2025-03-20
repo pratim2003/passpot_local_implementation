@@ -16,7 +16,7 @@ userSchema.pre("save",async function(next) {
 })
 
 userSchema.methods.isVerified = async function(password){
-    return await bcrypt.compare(password,this.password)
+    return enc_dec.decrypt(this.password,enc_dec.secrectKey)==password ? true : false
 }
 
 const userModel = mongoose.model("user",userSchema)

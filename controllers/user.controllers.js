@@ -11,7 +11,12 @@ module.exports.register = async(req,res)=>{
     }).validate(req.body)
     if(error) return res.status(400).json(error.message)
     try {
-        if(await userModel.findOne({username : req.body.username})) return res.status(400).json({message : "user already exists"})
+        // if(await userModel.findOne({username : req.body.username})) return res.status(400).json({message : "user already exists"})
+        const users = await userModel.find({})
+        const exitedUser = users.filter((user)=>(
+            req.body.username === enc_dec.decrypt(user.username,enc_dec.secrectKey)
+        ))[0]
+        if(exitedUser) return res.status(409).json({message :"user already existed"})
         const data = await userModel.create({
             username : req.body.username,
             password : req.body.password

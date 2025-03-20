@@ -13,13 +13,21 @@ const enc_dec = {
         return iv.toString("hex")+":"+encrypted
     },
     decrypt : (encryptedText,secrectKey)=>{
-        const key = crypto.createHash("sha256").update(secrectKey).digest()
+        try {
+            const key = crypto.createHash("sha256").update(secrectKey).digest()
         const [ivHex,encrypted] = encryptedText.split(":")
         const iv = Buffer.from(ivHex,"hex")
+        // console.log(iv,key)
         const dicipher = crypto.createDecipheriv("aes-256-cbc",key,iv)
-        const decrypt = dicipher.update(encrypted,"hex","utf-8")
+        let decrypt = dicipher.update(encrypted,"hex","utf-8")
         decrypt += dicipher.final("utf-8")
-        console.log(decrypt)
+        // console.log(decrypt)
+        return decrypt
+        } catch (error) {
+            console.log(error)
+            throw new Error(error.message)
+        }
+        // return decrypt
     },
     secrectKey : crypto
     .createHash("sha256")
